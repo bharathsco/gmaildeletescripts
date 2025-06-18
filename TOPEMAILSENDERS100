@@ -1,1 +1,32 @@
+function getTopEmailSenders() {
+  var threads = GmailApp.getInboxThreads(0, 500); // Modify to fetch more or fewer threads
+  var emailCounts = {};
+  
+  // Loop through threads and count occurrences of each sender's email address
+  for (var i = 0; i < threads.length; i++) {
+    var message = threads[i].getMessages()[0]; // Get the first message in the thread
+    var senderEmail = message.getFrom();
+    
+    // Extract email from sender info (if format is "Name <email>", we get the email part)
+    var emailMatch = senderEmail.match(/<(.+)>/);
+    if (emailMatch) {
+      senderEmail = emailMatch[1];
+    }
 
+    if (emailCounts[senderEmail]) {
+      emailCounts[senderEmail]++;
+    } else {
+      emailCounts[senderEmail] = 1;
+    }
+  }
+  
+  // Sort the emails by the number of occurrences (from highest to lowest)
+  var sortedEmails = Object.keys(emailCounts).sort(function(a, b) {
+    return emailCounts[b] - emailCounts[a];
+  });
+  
+  // Log the top 100 email addresses with the most emails
+  for (var j = 0; j < Math.min(100, sortedEmails.length); j++) {
+    Logger.log(sortedEmails[j] + ': ' + emailCounts[sortedEmails[j]] + ' emails');
+  }
+}
