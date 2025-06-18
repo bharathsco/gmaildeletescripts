@@ -1,0 +1,29 @@
+function deleteAllEmailsFromSenders() {
+  // List of email addresses to delete emails from
+  var emailAddresses = [
+    "noreply@hh.ru", "donotreply@sg.jobsdb.com", "bcforward@marketing.jobs.net", 
+    "genesis10@marketing.jobs.net", "jobmessenger@monster.com.sg", 
+    "cityofvancouver-jobnotification@noreply.jobs2web.com", 
+    "opportunities@foundit.in", "no-reply@reply.experteer.fr", 
+    "jobmessenger@monsterindia.com", "no-reply@swiggy.in", 
+    "JobRecommendations@sites.careerbuilder.com", "cfs@marketing.jobs.net", 
+    "realmanage@marketing.jobs.net", "fidelitytalentsource@marketing.jobs.net", 
+    "pyramidci@marketing.jobs.net", "rose-international@marketing.jobs.net",
+    "talentstaffingservices@marketing.jobs.net", "volvoinfor@noreply55.jobs2web.com",
+    "info@alerts.foundit.sg", "hello@email.ine.com", "noreply-findmydevice@google.com",
+    "Harisha@infopeoplecorp.com", "vijay.singh@quantumworldit.com", 
+    "contact@mautem.resumeworded.com", "jobs@jobsal", "s.rao@electronics-india.com",
+    "postings@civicjobs.ca",
+  ];
+  
+  for (var i = 0; i < emailAddresses.length; i++) {
+    var email = emailAddresses[i];
+    
+    // Search all emails from the current sender regardless of read/unread status
+    var threads = GmailApp.search('from:' + email);
+    
+    for (var j = 0; j < threads.length; j++) {
+      threads[j].moveToTrash();
+    }
+  }
+}
