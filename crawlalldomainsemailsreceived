@@ -1,0 +1,30 @@
+function getEmailSenderDomains() {
+  var threads = GmailApp.getInboxThreads(0, 500); // Adjust the count if needed
+  var domainSet = new Set();
+
+  for (var i = 0; i < threads.length; i++) {
+    var messages = threads[i].getMessages();
+    for (var j = 0; j < messages.length; j++) {
+      var sender = messages[j].getFrom();
+      var emailMatch = sender.match(/<(.+?)>/) || sender.match(/^(.+?)$/); // Handles "Name <email@domain.com>" and plain emails
+      if (emailMatch) {
+        var email = emailMatch[1].trim();
+        var domain = email.split('@')[1];
+        if (domain) {
+          domainSet.add(domain.toLowerCase());
+        }
+      }
+    }
+  }
+
+  // Convert Set to Array and sort
+  var domainList = Array.from(domainSet).sort();
+
+  // Output result in Logger (View > Logs in script editor)
+  Logger.log("Unique sender domains:");
+  domainList.forEach(function(domain) {
+    Logger.log(domain);
+  });
+
+  return domainList;
+}
